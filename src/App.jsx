@@ -13,6 +13,7 @@ function Movie(props) {
 
 function App() {
   const [search, setSearch] = useState("");
+  const [query, setQuery] = useState("");
   const [count, setCount] = useState(0);
   const [movieData, setMovieData] = useState(null);
 
@@ -29,13 +30,13 @@ function App() {
 useEffect(() => {
   if (search.trim() === "") return;
 
-  fetch(`https://www.omdbapi.com/?apikey=eccad948&t=${search}`)
+  fetch(`https://www.omdbapi.com/?apikey=eccad948&t=${query}`)
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
       setMovieData(data);
     });
-}, [search]);
+}, [query]);
 
   return (
     <div>
@@ -49,8 +50,8 @@ useEffect(() => {
       onChange={(e) => setSearch(e.target.value)}
       />
 
-      <button onClick={() => setCount(count +1)}>
-        Increase Count
+      <button onClick={() => setQuery(search)}>
+        Search
       </button> 
 
       {movieData && movieData.Response === "True" && (
@@ -66,17 +67,6 @@ useEffect(() => {
   </div>
 )}
 
-     {filteredMovies.length > 0 ? (
-     filteredMovies.map((movie) => (
-          <Movie
-          key={movie.title}
-           title={movie.title}
-            year={movie.year} 
-            />
-     ))
-    ) : (
-      <p>No movies found.</p>
-    )}
      </div>
   );
 }
