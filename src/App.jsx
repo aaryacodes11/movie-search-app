@@ -16,6 +16,8 @@ function App() {
   const [query, setQuery] = useState("");
   const [count, setCount] = useState(0);
   const [movieData, setMovieData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const movies = [
     {title: "Batman", year:2008},
@@ -30,13 +32,28 @@ function App() {
 useEffect(() => {
   if (search.trim() === "") return;
 
+  setLoading(true);
+
   fetch(`https://www.omdbapi.com/?apikey=eccad948&t=${query}`)
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
-      setMovieData(data);
+      if (data.Response === "True") {
+        setMovieData(data);
+        setError("");
+      } else {
+        setMovieData(null);
+        setError(data.Error);
+      }
+      
+      setLoading(false);
     });
 }, [query]);
+
+function handleSearch() {
+  if (search.trim() === "") return;
+  setQuery(search);
+  setSearch("");
+}
 
   return (
     <div>
@@ -48,11 +65,18 @@ useEffect(() => {
       placeholder="Search Movies..."
       value={search}
       onChange={(e) => setSearch(e.target.value)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          handleSearch();
+        }
+      }}
       />
 
-      <button onClick={() => setQuery(search)}>
+      <button onClick={handleSearch}>
         Search
       </button> 
+
+      {loading && <h2>loading...</h2>}
 
       {movieData && movieData.Response === "True" && (
   <div>
@@ -64,8 +88,14 @@ useEffect(() => {
     />
     <p>Year: {movieData.Year}</p>
     <p>IMDb Rating: {movieData.imdbRating}</p>
+    <p>Genre: {movieData.Genre}</p>
+    <p>Runtime: {movieData.Runtime}</p>
+    <p>Plot: {movieData.Plot}</p>
   </div>
 )}
+
+{error && <h2>❌ {error}</h2>}
+
 
      </div>
   );
