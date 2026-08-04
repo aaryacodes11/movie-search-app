@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import "./App.css";
+import MovieCard from "./MovieCard";
 
 function Movie(props) {
 
@@ -62,7 +63,7 @@ function handleSearch() {
 
       <input
       type="text"
-      placeholder="Search Movies..."
+      placeholder="Search your favourite movie..."
       value={search}
       onChange={(e) => setSearch(e.target.value)}
       onKeyDown={(e) => {
@@ -72,27 +73,16 @@ function handleSearch() {
       }}
       />
 
-      <button onClick={handleSearch}>
-        Search
+      <button
+       onClick={handleSearch}
+       disabled={loading}
+       >
+        {loading ? "Searching..." : "Search"}
       </button> 
 
       {loading && <h2>loading...</h2>}
 
-      {movieData && movieData.Response === "True" && (
-  <div>
-    <h2>{movieData.Title}</h2>
-    <img
-      src={movieData.Poster}
-      alt={movieData.Title}
-      width="200"
-    />
-    <p>Year: {movieData.Year}</p>
-    <p>IMDb Rating: {movieData.imdbRating}</p>
-    <p>Genre: {movieData.Genre}</p>
-    <p>Runtime: {movieData.Runtime}</p>
-    <p>Plot: {movieData.Plot}</p>
-  </div>
-)}
+      {movieData && <MovieCard movie={movieData} />}
 
 {error && <h2>❌ {error}</h2>}
 
