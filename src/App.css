@@ -1,55 +1,97 @@
 body {
-  font-family: Arial, sans-serif;
-  background-color: #121212;
-  color: white;
-  text-align: center;
   margin: 0;
-  padding: 20px;
+  font-family: Arial, sans-serif;
+  background: #141414;
+  color: white;
+}
+
+.App {
+  text-align: center;
+  padding: 30px;
+}
+
+h1 {
+  margin-bottom: 25px;
+}
+
+.search-box {
+  margin-bottom: 25px;
 }
 
 input {
-  padding: 10px;
-  width: 250px;
-  font-size: 16px;
+  width: 280px;
+  padding: 12px;
   border-radius: 8px;
   border: none;
+  outline: none;
+  font-size: 16px;
 }
 
 button {
-  padding: 10px 20px;
   margin-left: 10px;
-  font-size: 16px;
+  padding: 12px 20px;
   border: none;
   border-radius: 8px;
-  cursor: pointer;
-  background-color: #ff9800;
+  background: #ff3d3d;
   color: white;
+  cursor: pointer;
+  font-size: 16px;
 }
 
 button:hover {
-  background-color: #e68900;
+  background: #ff1f1f;
 }
 
 button:disabled {
-  background-color: gray;
-  cursor: not-allowed;
+  background: gray;
 }
 
 .movie-card {
   width: 350px;
   margin: 30px auto;
-  background: #1f1f1f;
+  background: #222;
   border-radius: 12px;
+  overflow: hidden;
   padding: 20px;
-  box-shadow: 0 0 15px rgba(255,255,255,0.15);
+  box-shadow: 0 0 20px rgba(255,255,255,0.1);
 }
 
 .movie-card img {
   width: 100%;
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
 .movie-card p {
   text-align: left;
-  line-height: 1.5;
+  line-height: 1.6;
+}
+
+.history {
+  margin-top: 30px;
+}
+
+.history p {
+  color: #66b3ff;
+  cursor: pointer;
+  margin: 6px;
+}
+
+.history p:hover {
+  color: white;
+}
+
+@media (max-width: 600px) {
+  input {
+    width: 90%;
+    margin-bottom: 10px;
+  }
+
+  button {
+    margin-left: 0;
+    width: 95%;
+  }
+
+  .movie-card {
+    width: 90%;
+  }
 }

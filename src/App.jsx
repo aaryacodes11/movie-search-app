@@ -11,6 +11,17 @@ function App() {
   const [history, setHistory] = useState([]);
 
   useEffect(() => {
+    const savedHistory = localStorage.getItem("history");
+    if (savedHistory) {
+      setHistory(JSON.parse(savedHistory));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("history", JSON.stringify(history));
+  }, [history]);
+
+  useEffect(() => {
     if (query.trim() === "") return;
 
     setLoading(true);
@@ -43,46 +54,64 @@ function App() {
     setQuery(trimmedSearch);
 
     setHistory((prevHistory) =>
-       [
-      trimmedSearch,
-      ...prevHistory.filter(
-        (item) => item.toLowerCase() !== trimmedSearch.toLowerCase()
-      ),
-       ].slice(0, 5)
+      [
+        trimmedSearch,
+        ...prevHistory.filter(
+          (item) =>
+            item.toLowerCase() !== trimmedSearch.toLowerCase()
+        ),
+      ].slice(0, 5)
     );
 
     setSearch("");
   }
 
   return (
-    <div>
-      <h1>Movie Search</h1>
+    <div className="App">
+      <h1>🎬 Movie Search App</h1>
 
-      <input
-        type="text"
-        placeholder="Search your favourite movie..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            handleSearch();
-          }
-        }}
-      />
+      <div className="search-box">
+        <input
+          type="text"
+          placeholder="Search your favourite movie..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSearch();
+            }
+          }}
+        />
 
-      <button onClick={handleSearch} disabled={loading}>
-        {loading ? "Searching..." : "Search"}
-      </button>
+        <button
+          onClick={handleSearch}
+          disabled={loading}
+        >
+          {loading ? "Searching..." : "Search"}
+        </button>
+      </div>
 
       {loading && <h2>Loading...</h2>}
 
       {error && <h2>❌ {error}</h2>}
 
-      <h3>Recent Searches</h3>
+      {history.length > 0 && (
+        <div className="history">
+          <h3>Recent Searches</h3>
 
-      {history.map((item, index) => (
-        <p key={index}>{item}</p>
-      ))}
+          {history.map((item, index) => (
+            <p
+              key={index}
+              onClick={() => {
+                setSearch(item);
+                setQuery(item);
+              }}
+            >
+              {item}
+            </p>
+          ))}
+        </div>
+      )}
 
       {movieData && <MovieCard movie={movieData} />}
     </div>
